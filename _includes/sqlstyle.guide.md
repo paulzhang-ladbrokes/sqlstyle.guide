@@ -359,6 +359,8 @@ FROM table
 ```
 
 Or WHEN/END should have 2 space left justification, and `WHEN`/`THEN` should be indented the same as the `ELSE`/`value`.
+Multiple `AND` or `OR` clauses can be inlined if < 80 characters, or should be right aligned with the whitespace river
+after `WHEN` if they are longer
 
 ```sql
 SELECT
@@ -367,6 +369,12 @@ SELECT
       THEN 'x more than y but less than z'
     WHEN x > y AND x > z
       THEN 'x more than y and more than z'
+    WHEN some_very_long_thing_happened BETWEEN '2016-01-01' AND '2016-01-01'
+     AND some_event_very_much_longer_thing_happened BETWEEN '2016-01-01' AND '2016-01-01'
+      THEN 'something happened later'
+    WHEN some_very_long_thing_happened BETWEEN '2016-01-01' AND '2016-01-01'
+      OR some_event_very_much_longer_thing_happened BETWEEN '2016-01-01' AND '2016-01-01'
+      THEN 'something else'
     ELSE
       'x and y not related'
     END AS city,

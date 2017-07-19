@@ -1,7 +1,5 @@
 # SQL style guide
 
-## [Beginner's Version of This Guide / Quick Start](https://docs.google.com/document/d/1qcrQHw2QCUnpbY4epipYstIaBD0IF9HCTmSa7pVKmN4/edit)
-
 ## Overview
 
 These are guidelines to help you write SQL queries that will be easier to read.
@@ -38,7 +36,7 @@ Based on a work at [http://www.sqlstyle.guide][self].
 
 ### Avoid
 
-* CamelCase—it is difficult to scan quickly.
+* (LB) ~~CamelCase—it is difficult to scan quickly~~.
 * Descriptive prefixes or Hungarian notation such as `sp_` or `tbl`.
 * Plurals—use the more natural collective term where possible instead. For example
   `staff` instead of `employees` or `people` instead of `individuals`.
@@ -58,13 +56,15 @@ Based on a work at [http://www.sqlstyle.guide][self].
   unless you are using multi-byte character set.
 * Names must begin with a letter and may not end with an underscore.
 * Only use letters, numbers and underscores in names.
-* Avoid the use of multiple consecutive underscores—these can be hard to read.
-* Use underscores where you would naturally include a space in the name (first
-  name becomes `first_name`).
+* (LB) Use lowerCamelCase for column name and UpperCamelCase for table name.
+* (LB) Avoid the use of underscore (`_`)
+* ~~Avoid the use of multiple consecutive underscores—these can be hard to read.~~
+* ~~Use underscores where you would naturally include a space in the name (first
+  name becomes `first_name`).~~
 
 ```sql
-SELECT first_name
-FROM staff;
+SELECT firstName
+FROM Staff;
 ```
 
 ### Tables
@@ -91,14 +91,14 @@ FROM staff;
   a column defined in the schema.
 
 ```sql
-SELECT first_name AS fn
-FROM staff AS s1
-  JOIN students AS s2
-    ON s2.mentor_id = s1.staff_num;
+SELECT firstName AS fn
+FROM Staff AS s1
+  JOIN Student AS s2
+    ON s2.mentorId = s1.staffNum;
 ```
 ```sql
-SELECT SUM(s.monitor_tally) AS monitor_total
-FROM staff AS s;
+SELECT SUM(s.monitorTally) AS monitorTotal
+FROM Staff AS s;
 ```
 
 ### Stored procedures
@@ -145,9 +145,9 @@ Do not use database server specific keywords where an ANSI SQL keyword already
 exists performing the same function. This helps to make code more portable.
 
 ```sql
-SELECT model_num
-FROM phones AS p
-WHERE p.release_date > '2014-09-30';
+SELECT modelNum
+FROM Phone AS p
+WHERE p.releaseDate > '2016-09-30';
 ```
 
 ### White space
@@ -166,8 +166,8 @@ and `ORDER BY`should be fully left justified.
 For single `SELECT`s, you can use the single line form:
 
 ```sql
-SELECT first_name
-FROM rappers
+SELECT firstName
+FROM Rapper
 ```
 
 If you are `SELECT`ing more than one column, place all selects on their own line indented 2
@@ -175,13 +175,13 @@ spaces in a block after the `SELECT` keyword.
 
 ```sql
 SELECT
-  first_name,
-  last_name,
-  is_still_tippin_on_four_fours,
-  is_still_wrapped_in_four_vogues
-FROM rappers
-WHERE first_name = 'Mike'
-  AND last_name = 'Jones'
+  firstName,
+  lastName,
+  isStillTippinOnFourFours,
+  isStillWrappedInFourVogues
+FROM Rapper
+WHERE firstName = 'Mike'
+  AND lastName = 'Jones'
 ```
 
 This allows the reader to quickly scan for the important building blocks of the query.
@@ -198,11 +198,11 @@ Always include spaces:
 ```sql
 SELECT
   a.title,
-  a.release_date,
-  a.recording_date
-FROM albums AS a
+  a.releaseDate,
+  a.recordingDate
+FROM Album AS a
 WHERE a.title = 'Charcoal Lane'
-   OR a.title = 'The New Danger';
+  OR a.title = 'The New Danger';
 ```
 
 #### Line spacing
@@ -222,26 +222,47 @@ Keeping all the dependent keywords (e.g. `ON` depends on `JOIN`, `AND` depends o
 all the lines are part of the same clause.
 
 ```sql
-INSERT INTO albums (title, release_date, recording_date)
+INSERT INTO Album (title, releaseDate, recordingDate)
 VALUES ('Charcoal Lane', '1990-01-01 01:01:01.00000', '1990-01-01 01:01:01.00000'),
        ('The New Danger', '2008-01-01 01:01:01.00000', '1990-01-01 01:01:01.00000');
 ```
 
 ```sql
-UPDATE albums
-   SET release_date = '1990-01-01 01:01:01.00000'
-WHERE title = 'The New Danger';
+INSERT INTO Album
+  (
+    title,
+    releaseDate,
+    recordingDate
+  )
+VALUES
+  (
+    'Charcoal Lane',
+    '1990-01-01 01:01:01.00000',
+    '1990-01-01 01:01:01.00000'
+  ),
+  (
+    'The New Danger',
+    '2008-01-01 01:01:01.00000',
+    '1990-01-01 01:01:01.00000'
+  );
+```
+
+```sql
+UPDATE Album
+  SET releaseDate = '1990-01-01 01:01:01.00000'
+WHERE title = 'The New Danger'
+  AND recordingDate = '1990-01-01 01:01:01.00000';
 ```
 
 ```sql
 SELECT
   a.title,
-  a.release_date,
-  a.recording_date,
-  a.production_date
-FROM albums AS a
+  a.releaseDate,
+  a.recordingDate,
+  a.productionDate
+FROM Album AS a
 WHERE a.title = 'Charcoal Lane'
-   OR a.title = 'The New Danger';
+  OR a.title = 'The New Danger';
 ```
 
 #### JOINs
@@ -251,21 +272,21 @@ Joins should be indented 2 spaces right from the `FROM` keyword
 Single line `JOIN`s are fine for simple situations
 
 ```sql
-SELECT r.last_name
-FROM riders AS r
-  INNER JOIN bikes AS b ON r.bike_vin_num = b.vin_num
-  INNER JOIN crew AS c ON r.crew_chief_last_name = c.last_name
+SELECT r.lastName
+FROM Rider AS r
+  JOIN Bike AS b ON r.bikeVinNum = b.vinNum
+  INNER JOIN Crew AS c ON r.crewChiefLastName = c.lastName
 ```
 
 Multi line JOINs should be indented as per the dependent keywords rule:
 
 ```sql
-SELECT r.last_name
-FROM riders AS r
-  INNER JOIN bikes AS b
-          ON r.bike_vin_num = b.vin_num
-         AND r.bike_lane = r.lane
-  INNER JOIN crew c ON r.crew_chief_last_name = c.last_name
+SELECT r.lastName
+FROM Rider AS r
+  INNER JOIN Bike AS b
+    ON r.bikeVinNum = b.vinNum
+      AND r.bikeLane = r.lane
+  INNER JOIN Crew c ON r.crewChiefLastName = c.lastName
 WHERE id = 5
 ```
 
@@ -276,49 +297,48 @@ such that the whitespace indicates the current block and the boolean `AND`/`OR` 
 expressions they apply to.
 
 ```sql
-SELECT first_name
-FROM rappers
+SELECT firstName
+FROM Rapper
 WHERE
   (
-    first_name = 'Mike'
+    firstName = 'Mike'
     AND
-    last_name = 'Jones'
+    lastName = 'Jones'
   )
   OR
   (
-    was_tipping = 1
+    wasTipping = 1
     AND
-    is_still_tippin_on_four_fours = 1
+    isStillTippinOnFourFours = 1
     AND
     (
-      is_still_wrapped_in_four_vogues = 1
+      isStillWrappedInFourVogues = 1
       OR
-      is_wood_grain_gripping = 0
+      isWoodGrainGripping = 0
     )
-  )
+  );
 ```
-
 
 #### WITH statements (PostgreSQL only)
 
 Indent them until the closing parentheses.
 
 ```sql
-WITH my_tmp_table AS (
-  SELECT r.last_name
-  FROM riders AS r
-    INNER JOIN bikes AS b ON r.bike_vin_num = b.vin_num
+WITH MyTmpTable AS (
+  SELECT r.lastName
+  FROM Rider AS r
+    INNER JOIN Bike AS b ON r.bikeVinNum = b.vinNum
   WHERE id = 10
 ),
 
-my_other_tmp_table AS (
-  SELECT last_name
-  FROM staff
+MyOtherTmpTable AS (
+  SELECT lastName
+  FROM Staff
 )
 
 SELECT *
-FROM my_tmp_table
-  JOIN my_other_tmp_table ON my_other_tmp_table.last_name = my_tmp_table.last_name
+FROM MyTmpTable
+  JOIN MyOtherTmpTable ON myOtherTmpTable.lastName = myTmpTable.lastName
 ```
 
 #### Sub-queries
@@ -332,19 +352,19 @@ statement w/r/t parentheses.
 
 ```sql
 SELECT
-  r.last_name,
+  r.lastName,
   (
-    SELECT MAX(YEAR(championship_date))
-    FROM champions AS c
-    WHERE c.last_name = r.last_name
+    SELECT MAX(YEAR(championshipDate))
+    FROM Champion AS c
+    WHERE c.lastName = r.lastName
       AND c.confirmed = 'Y'
-  ) AS last_championship_year
-FROM riders AS r
-WHERE r.last_name IN
+  ) AS lastChampionshipYear
+FROM Rider AS r
+WHERE r.lastName IN
   (
-    SELECT c.last_name
-    FROM champions AS c
-    WHERE YEAR(championship_date) > '2008'
+    SELECT c.lastName
+    FROM Champion AS c
+    WHERE YEAR(championshipDate) > '2008'
       AND c.confirmed = 'Y'
   )
 ```
@@ -355,7 +375,7 @@ WHERE r.last_name IN
 
 ```sql
 SELECT CASE WHEN x > y THEN 1 ELSE 0 END
-FROM table
+FROM Table
 ```
 
 Or WHEN/END should have 2 space left justification, and `WHEN`/`THEN` should be indented the same as the `ELSE`/`value`.
@@ -369,18 +389,18 @@ SELECT
       THEN 'x more than y but less than z'
     WHEN x > y AND x > z
       THEN 'x more than y and more than z'
-    WHEN some_very_long_thing_happened BETWEEN '2016-01-01' AND '2016-01-01'
-     AND some_event_very_much_longer_thing_happened BETWEEN '2016-01-01' AND '2016-01-01'
+    WHEN someVeryLongThingHappened BETWEEN '2016-01-01' AND '2016-01-01'
+     AND someEventVeryMuchLongerThingHappened BETWEEN '2016-01-01' AND '2016-01-01'
       THEN 'something happened later'
-    WHEN some_very_long_thing_happened BETWEEN '2016-01-01' AND '2016-01-01'
-      OR some_event_very_much_longer_thing_happened BETWEEN '2016-01-01' AND '2016-01-01'
+    WHEN someVeryLongThingHappened BETWEEN '2016-01-01' AND '2016-01-01'
+      OR someEventVeryMuchLongerThingHappened BETWEEN '2016-01-01' AND '2016-01-01'
       THEN 'something else'
     ELSE
       'x and y not related'
     END AS city,
-  street_address,
-  phone_number
-FROM office_locations
+  streetAddress,
+  phoneNumber
+FROM OfficeLocation
 ```
 
 #### Case statements (MySql)
@@ -393,9 +413,9 @@ SELECT
     WHEN 'EH1'
       THEN 'Edinburgh'
     END AS city,
-  street_address,
-  phone_number
-FROM office_locations
+  streetAddress,
+  phoneNumber
+FROM OfficeLocation
 ```
 
 ### Preferred formalisms
@@ -417,9 +437,9 @@ SELECT
     WHEN 'EH1'
       THEN 'Edinburgh'
     END AS city
-FROM office_locations
+FROM OfficeLocation
 WHERE country = 'United Kingdom'
-  AND opening_time BETWEEN 8 AND 9
+  AND openingTime BETWEEN 8 AND 9
   AND postcode IN ('EH1', 'BN1', 'NN1', 'KW1')
 ```
 
@@ -513,12 +533,12 @@ constraints along with field value validation.
 
 ```sql
 CREATE TABLE staff (
-    PRIMARY KEY (staff_num),
-    staff_num      INT(5)       NOT NULL,
-    first_name     VARCHAR(100) NOT NULL,
-    pens_in_drawer INT(2)       NOT NULL,
-                   CONSTRAINT pens_in_drawer_range
-                   CHECK(pens_in_drawer >= 1 AND pens_in_drawer < 100)
+    PRIMARY KEY (staffNum),
+    staffNum INT(5) NOT NULL,
+    firstName VARCHAR(100) NOT NULL,
+    pensInDrawer INT(2) NOT NULL,
+      CONSTRAINT pensInDrawerRange
+      CHECK(pensInDrawer >= 1 AND pensInDrawer < 100)
 );
 ```
 
@@ -728,6 +748,7 @@ DEGREE
 DELAY_KEY_WRITE
 DELAYED
 DELETE
+DELETED
 DELIMITER
 DELIMITERS
 DENSE_RANK
@@ -876,6 +897,7 @@ INOUT
 INPUT
 INSENSITIVE
 INSERT
+INSERTED
 INSERT_ID
 INSTANCE
 INSTANTIABLE

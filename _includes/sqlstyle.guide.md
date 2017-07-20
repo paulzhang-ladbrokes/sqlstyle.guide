@@ -170,8 +170,14 @@ SELECT firstName
 FROM Rapper
 ```
 
-If you are `SELECT`ing more than one column, place all selects on their own line indented 2
-spaces in a block after the `SELECT` keyword.
+(LB) If you are in a pure SQL script, use 2 spaces for indent. If you are in a program, 
+use language specified indents. For instance,
+* PHP uses 4 spaces (PSR-2), SQL statements in PHP should use 4 spaces to indent.
+* Golang uses tabs, SQL statements in golang should use tabs to indent.
+* Javascript uses 2 spaces (ESLint), SQL statement in javascript should use 2 spaces to indent.
+
+If you are `SELECT`ing more than one column, place all selects on their own line indented in 
+a block after the `SELECT` keyword.
 
 ```sql
 SELECT
@@ -267,7 +273,7 @@ WHERE a.title = 'Charcoal Lane'
 
 #### JOINs
 
-Joins should be indented 2 spaces right from the `FROM` keyword
+Joins should be indented one level right from the `FROM` keyword
 
 Single line `JOIN`s are fine for simple situations
 
@@ -346,8 +352,8 @@ FROM MyTmpTable
 In PostgreSQL you should probably be writing subqueries with `WITH` clauses and mostly avoiding the
 use of inline subqueries.
 
-In MySQL or other query engines that do not support `WITH`, sub-queries should be left aligned 2
-spaces to the right of the opening parentheses and then laid out using the same style as a `WITH`
+In MySQL or other query engines that do not support `WITH`, sub-queries should be left aligned 1 level
+indented to the right of the opening parentheses and then laid out using the same style as a `WITH`
 statement w/r/t parentheses.
 
 ```sql

@@ -1,31 +1,21 @@
-# SQL style guide
+# SQL Style Guide
 
-**[Read the guide](_includes/sqlstyle.guide.md)**
-
----
+**[Read the guide](sqlstyle.guide.md)**
 
 ## General
 
-The guide is written in [Markdown][md-lang] and uses [Jekyll][jekyll] via
-[GitHub's Pages][gh-pages] facility to render itself upon pushing to the `gh-pages`
-branch.
+The guide is written in [Markdown][md-lang].
 
 ## Sources
 
-The markdown source for the guide can be found in [_includes/sqlstyle.guide.md][md]
+The markdown source for the guide can be found in [sqlstyle.guide.md][md]
 
-## Installing for local development
+## Endorsed by
+* [Ladbrokes Digital Australia][lb-au]
 
-There is a Gemfile supplied so you just need to follow the
-[GitHub Pages documentation][gh-pages-help] to install the dependencies.
-
-To then run it locally `bundle exec jekyll serve`
-
-
+## Evolution
+Any suggestions, please create issues or pull requests. 
 
 [md-lang]: http://daringfireball.net/projects/markdown/
-[jekyll]: http://jekyllrb.com/
-[gh-pages]: https://pages.github.com/
 [md]: https://github.com/treffynnon/sqlstyle.guide/blob/gh-pages/_includes/sqlstyle.guide.md
-[gh-pages-help]: https://help.github.com/articles/using-jekyll-with-pages/#installing-jekyll
-
+[lb-au]: http://www.ladbrokes.com.au/

@@ -10,3 +10,5 @@ Gemfile.lock
 
 _site
 _gh_pages
+
+.idea/
